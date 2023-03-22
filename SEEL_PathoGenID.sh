@@ -166,26 +166,14 @@ echo "#############"
 echo ""
 
 # correr "stringMLST" subtyping de Listeria monocytogenes, Salmonella enterica, Escherichia coli
-<<<<<<< HEAD
 if [[ -d ASSEMBLY/Listeria ]]; then
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 echo ""
 echo "##########################################################################################################################################################"
 echo " Comenzando subtyping de Listeria monocytogenes, Salmonella enterica y Escherichia coli, usando stringMLST version: $(stringMLST.py -v | awk '{print $2,$3,$4,$5,$6,$7}')"
 echo "##########################################################################################################################################################"
 echo ""
-<<<<<<< HEAD
    stringMLST.sh
 fi
-=======
-
-stringMLST.sh
-
-# correr "MLST" subtyping de especies bacterianas cargadas a pubMLST
-echo "##########TNC_02-2023#########"
-mlst.sh
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
 # correr "script casero BIGSdb_Lm" subtyping de Listeria monocytogenes, Salmonella enterica, Escherichia coli
 if [[ -d ASSEMBLY/Listeria ]]; then
@@ -206,7 +194,6 @@ if [[ -d ASSEMBLY/Salmonella ]]; then
    echo ""
    SeqSero2.sh
 fi
-<<<<<<< HEAD
 # correr "sistr" subtyping de Salmonella enterica
 if [[ -d ASSEMBLY/Salmonella ]]; then
    echo ""
@@ -216,18 +203,6 @@ if [[ -d ASSEMBLY/Salmonella ]]; then
    echo ""
    sistr_cmd.sh
 fi
-=======
-
-# correr "sistr" subtyping de Salmonella enterica
-#if [[ -d ASSEMBLY/Salmonella ]]; then
-#   echo ""
-#   echo "###############################################################################"
-#   echo " Comenzando subtyping de Salmonella enterica, usando sistr_cmd version: v$(sistr -V | awk '{print $2}')"
-#   echo "###############################################################################"
-#   echo ""
-#   sistr_cmd.sh
-#fi
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
 # correr "SeroTypeFinder" subtyping de Escherichia coli
 if [[ -d ASSEMBLY/Escherichia ]]; then
@@ -275,11 +250,7 @@ echo " Comenzando analisis de genes RAM, usando AMRFinder(Plus) version: v$(amrf
 echo "############################################################################"
 echo ""
 
-<<<<<<< HEAD
 AMRFinder.sh
-=======
-#AMRFinder.sh
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
 #####################################################################################################################################################################
 #####################################################

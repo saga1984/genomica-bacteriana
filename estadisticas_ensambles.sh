@@ -119,10 +119,5 @@ sed 's/,/\t/g' ${dir}/estadisticas_totales.csv > ${dir}/estadisticas_totales.tsv
 rm ${dir}/temp*
 
 # remover archivos de cobertura y profundidad
-<<<<<<< HEAD
 #rm ${dir}/*coverage.txt
 #rm ${dir}/*depth.txt
-=======
-rm ${dir}/*coverage.txt
-rm ${dir}/*depth.txt
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

@@ -15,4 +15,3 @@ for file in ./*.bam; do
    gzip -9 ${fname}_R1.fastq
    gzip -9 ${fname}_R2.fastq
 done
-

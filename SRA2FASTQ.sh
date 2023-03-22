@@ -28,11 +28,7 @@ if [[ ${#} -eq 0 ]]; then
 fi
 
 # funcion para descargar archivos SRA
-<<<<<<< HEAD
 download_data()
-=======
-fasterqd()
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 {
    cat ${lista} | while read sequence; do
       # asignar nombres de archivos de salida
@@ -53,28 +49,6 @@ fasterqd()
    done
 }
 
-<<<<<<< HEAD
 # llamar a la funcion para descargar SRA
 download_data
 
-=======
-# funcion para descargar archivos SRA
-fastqd()
-{
-   cat ${lista} | while read sequence; do
-      # asignar nombres de archivos de salida
-      r="${sequence}.fastq"
-      # asignar nombres de archivos de salida modificados
-      r_n=${r2/_2/_R2}
-      # descargar y conconvertir archivos SRA a FASTQ
-      echo -e "\nRunning fastq-dump to download $sequence.\n"
-      fastq-dump --split-files --gzip ${sequence} 2> fastq-dump_${sequence}.log
-   done
-}
-
-# llamar a la funcion para descargar SRA
-fasterqd # lecturas pareadas
-if [[ ! -f ${r2}  ]]; then
-   fastqd # lecturas no pareadas
-fi
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

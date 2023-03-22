@@ -12,11 +12,6 @@ menu_ayuda="
 \t para todos los genes ubicados en un directorio. Ej:(ASSEMBLY)
 \n USO:
 \t $(basename ${0}), [OPCIONES] <ESPECIE>
-<<<<<<< HEAD
-=======
-\t $(basename ${0}) -l
-\t $(basename ${0}) -e 'Salmonella enterica'
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 \n OPCIONES:
 \t -e \t\t Especie de las secuencias de interes (NOTA: solo se podra identificar mutaciones puntuales si la especie
 \t\t\t de interes esta INCLUIDA en la lista de especies disponibles, de lo contrario solo se analizaran genes adquiridos
@@ -24,21 +19,8 @@ menu_ayuda="
 \t -l \t\t Lista de especies disponibles, ver con '-l'
 
 \t -h \t\t Muestre este menu de ayuda
-<<<<<<< HEAD
 "
 
-=======
-
-"
-
-# si no se agregan opciones ni argmentos durante el llamado de la funcion
-# entonces muesta el menu de ayuda y sal
-if [[ $# -eq 0 ]]; then
-   echo -e "${menu_ayuda}"
-   exit 1
-fi
-
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 # lista de especies opcion -l
 lista_especies="
 LISTA DE ESPECIES TOMADA DE RESFINDER (https://cge.food.dtu.dk/services/ResFinder/)\n
@@ -57,7 +39,6 @@ Neisseria gonorrhoeae
 Mycobacterium tuberculosis
 Staphylococcus aureus
 "
-<<<<<<< HEAD
 
 # si no se agregan opciones ni argmentos durante el llamado de la funcion
 # entonces muesta el menu de ayuda y sal
@@ -66,30 +47,16 @@ if [[ $# -eq 0 ]]; then
    exit 1
 fi
 
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 # generar conteo
 conteo=0
 
 ResFinder(){
 
-<<<<<<< HEAD
    # crear variable genero
    genero=$(echo ${OPTARG} | cut -d ' ' -f '1')
 
    # crear directorio para guardar resultados
    dir="RES.POINT_FINDER_${genero}"
-=======
-   # crear variable genero Y ESPEIE UNIDA EN UN SOLO STRING
-   genero=$(echo ${OPTARG} | cut -d ' ' -f '1')
-   optarg=$(echo ${OPTARG} | tr ' ' '_')
-
-   echo -e "\nGenero = ${genero}\n" # CONTROL
-   echo -e "\nEspecie en un string = ${optarg}\n" # CONTROL
-
-   # crear directorio para guardar resultados
-   dir="RESPOINT_FINDER_${genero}"
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
    # si no existe, crear directorio
    if [[ ! -d ${dir} ]]; then
@@ -97,11 +64,7 @@ ResFinder(){
    fi
 
    # crear archivo para guardar resultados finales en formato csv
-<<<<<<< HEAD
    echo -e "Especie,ID,GenesRAM" > ${dir}/ResPointFinder_resultados_all.csv
-=======
-   echo -e "Especie,ID,GenesRAM" > ${dir}/ResPointFinder_${optarg}_resultados_all.csv
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
    # for loop para cada uno de los ensambles obtenidos y guardados en el directorio ASSEMBLY
    for ensamble in ASSEMBLY/*.fa; do
@@ -111,11 +74,8 @@ ResFinder(){
       conteo=$[ ${conteo} + 1 ]
       # mostrar numero y nombre de muestra
       echo -e "\n$conteo\t${ensamble_name}\n"
-<<<<<<< HEAD
       # variable de OPTARG unido por "_"
       optarg=$(echo "${OPTARG}" | tr ' ' '_')
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
       ############ ejecutar resfinder en modo point finder #################
       run_resfinder.py --inputfasta ./${ensamble} --acquired --point -u -db_res_kma ${db_resfinder} -db_point_kma ${db_pointfinder} -b ${blastn} -s "${OPTARG}" -o ${dir}/RF_${ensamble_name} 2> /dev/null
@@ -130,7 +90,6 @@ ResFinder(){
          grep -E "Mutation|acrB|pmrA|pmrB|gyrA|gyrB|parC|parE|16S_rrsD" ${dir}/RF_${ensamble_name}/PointFinder_results.txt | awk 'BEGIN{FS=OFS="\t"}{print $1, $2, $3, $4}' | grep -v "Unknown" > ${dir}/Pointfinder_${ensamble_name}_known_filtered.tsv
          # cambiar el nombre del archivo para que tome el nombre del ensamble
          mv ${dir}/RF_${ensamble_name}/PointFinder_prediction.txt ${dir}/${ensamble_name}_Prediction.tsv
-<<<<<<< HEAD
          ################################################ obtener archivo final de genes ########################################################
          # obtener archivo de resultados de Pointfinder
          grep -E "T57S|S83F|S83Y|S83I|D87G|D87N|D87Y|D87K" ${dir}/Pointfinder_${ensamble_name}_known_filtered.tsv | cut -d $'\t' -f '1' | tr ' .' '_' | sed 's/_p_/_/' | uniq | tr "\n" "," | sed 's/,$//g' > ${dir}/tmp_${ensamble_name}_point_known.txt
@@ -142,19 +101,6 @@ ResFinder(){
          # eliminar comma al final de cada fila (existen en caso de que no se hubieran identificado mutaciones puntuales)
          sed -i 's/,$//g' $dir/ResPointFinder_resultados_all.csv
 
-=======
-
-         # obtener archivo de resultados de Pointfinder
-         awk '{print $1}' ${dir}/Pointfinder_${ensamble_name}_known_filtered.tsv | uniq | sed '1d' | tr "\n" "," | sed 's/,$//g' > ${dir}/tmp_${ensamble_name}_point_known.txt
-         # obtener archivo de resultados de Resfinder
-         awk '{print $1}' ${dir}/Resfinder_${ensamble_name}_filtered.tsv | uniq | sed '1d' | tr "\n" "," | sed 's/,$//g' > ${dir}/tmp_${ensamble_name}_res.txt
-         # unir resultados de Res y Point Finder en un solo archivo CSV con ID y Genero bacteriano
-         echo -e "${optarg},${ensamble_name},$(cat ${dir}/tmp_${ensamble_name}_res.txt),$(cat ${dir}/tmp_${ensamble_name}_point_known.txt)" >> ${dir}/ResPointFinder_${optarg}_resultados_all.csv
-
-         # eliminar comma al final de cada fila (existen en caso de que no se hubieran identificado mutaciones puntuales)
-         sed -i 's/,$//g' $dir/ResPointFinder_${optarg}_resultados_all.csv
-         sed -i 's/,$//g' $dir/ResPointFinder_${optarg}_resultados_all.csv
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
       # de lo contarrio, elimina la carpeta recien creada y sal
       else
          echo -e "\nError!\n"
@@ -183,11 +129,7 @@ ResFinder_Other(){
    fi
 
    # crear archivo para guardar resultados finales en formato csv
-<<<<<<< HEAD
    echo -e "Especie,ID,GenesRAM" > ${dir}/ResFinder_resultados_all.csv
-=======
-   echo -e "Especie,ID,GenesRAM" > ${dir}/ResFinder_${OPTARG}_resultados_all.csv
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
    # for loop para cada uno de los ensambles obtenidos y guardados en el directorio ASSEMBLY
    for ensamble in ASSEMBLY/*.fa; do
@@ -211,18 +153,10 @@ ResFinder_Other(){
          # obtener archivo de resultados de Resfinder
          awk '{print $1}' ${dir}/Resfinder_${ensamble_name}_filtered.tsv | uniq | sed '1d' | tr "\n" "," | sed 's/,$//g' > ${dir}/tmp_${ensamble_name}_res.txt
          # unir resultados de Res y Point Finder en un solo archivo CSV con ID y Genero bacteriano
-<<<<<<< HEAD
          echo -e "${optarg},${ensamble_name},$(cat ${dir}/tmp_${ensamble_name}_res.txt)" >> ${dir}/ResFinder_resultados_all.csv
 
          # eliminar comma al final de cada fi+la (existen en caso de que no se hubieran identificado mutaciones puntuales)
          sed -i 's/,$//g' $dir/ResFinder_resultados_all.csv
-=======
-         echo -e "${optarg},${ensamble_name},$(cat ${dir}/tmp_${ensamble_name}_res.txt)" >> ${dir}/ResFinder_${OPTARG}_resultados_all.csv
-
-         # eliminar comma al final de cada fi+la (existen en caso de que no se hubieran identificado mutaciones puntuales)
-         sed -i 's/,$//g' $dir/ResFinder_resultados_all.csv
-         sed -i 's/,$//g' $dir/ResFinder_resultados_all.csv
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
       # de lo contarrio, elimina la carpeta recien creada y sal
       else
          echo -e "\nError!\n"

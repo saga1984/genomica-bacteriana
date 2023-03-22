@@ -26,7 +26,4 @@ args = parser.parse_args()
 
 # llamar la funcion mismatches
 mismatch(args.query, args.subject, args.number)
-<<<<<<< HEAD
 
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

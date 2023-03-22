@@ -22,10 +22,7 @@ for ensamble in ASSEMBLY/*.fa; do
          --prefix ${ensamble_name} \
    ${ensamble}
 done
-<<<<<<< HEAD
 
 
 #         --genus Listeria \          # no existe Listeria en la base de datos
 #         --usegenus \                # no existe Listeria en la base de datos
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

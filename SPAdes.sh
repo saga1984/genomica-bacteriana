@@ -22,19 +22,11 @@ for P1 in TRIMMING/*1P.trim.fastq.gz; do
    mv ${ename}_SPAdes/${ename}-spades-assembly.fasta ASSEMBLY/${ename}-spades-assembly.fasta # cambiar de carpeta
    rm -r ${ename}_SPAdes # eliminar carpeta de resultados de SPAdes
 
-<<<<<<< HEAD
    # eliminar contigs pequeños (menores a 300pb) (basado en:
    # la tubería MicroRunQC la cual es aceptado por GalaxyTrakr usa 200pb
    # varios articulos usan desde 200pb a 1000pb para bacterias (algunos estiman tamaño promedio de gen procariota de 1000pb))
    # algunas personas usan el criterio de ~ el doble del tamaño minimo de read (2 x 150pb)
    # por lo que se considera que 300pb es un valor bastante conservador
-=======
-   # eliminar contigs pequeños (menores a 500pb) (basado en:
-   # la tubería MicroRunQC la cual es aceptado por GalaxyTrakr usa 200pb
-   # varios articulos usan desde 200pb a 1000pb para bacterias (algunos estiman tamaño promedio de gen procariota de 1000pb))
-   # algunas personas usan el criterio de ~ el doble del tamaño minimo de read (2 x 150pb = 300 pb)
-   # por lo que se considera que 500pb es un buen valor
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    seqtk seq -L 500 ASSEMBLY/${ename}-spades-assembly.fasta > ASSEMBLY/${ename}-spades-assembly.fa
 
    # eliminar archivos originales (con contigs completos)

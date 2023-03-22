@@ -179,15 +179,12 @@ for file in ${dir}/ResPointFinder_*; do
    fi
 done
 
-<<<<<<< HEAD
 
 ##############################################
 # remover genes de estres y categoria estres #
 ##############################################
 
 
-=======
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 ###########################################
 # identiificacion de genes RAM: AMRFINDER
 ###########################################

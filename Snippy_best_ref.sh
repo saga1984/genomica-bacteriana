@@ -199,14 +199,8 @@ run_snippy() {
       sed -i 's/-spades-assembly//g' FastTree_clean.core.tree
 }
 
-<<<<<<< HEAD
 ##################################################
 # llamar a la funcion que hace todo "run_snippy" #
 ##################################################
-=======
-###################################################################
-# llamar las funciones que hacen todo "run_stats" y  "run_snippy" #
-###################################################################
->>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 run_stats
 run_snippy

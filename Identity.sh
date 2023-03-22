@@ -12,9 +12,3 @@ for file in blast_*; do
    rm identidad_$file_name
 done > Identidades.xlsx
 
-#for file in identidad_*; do
-#   rm $file
-#done
-
-#cat Identidades.csv | cut -d "_" -f "7" > Identidad.csv
-#rm Identidades.csv
