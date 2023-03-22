@@ -1,9 +1,0 @@
-i ./$ensamble -p $resfinder_db  -mp /home/vangie/miniconda3/envs/Blast/bin/blastn > RF_$(basename $ensamble .fa).txt#!/bin/bash
-
-#
-# Predice el serotipo de E coli en todos los ensambles en un directorio
-#
-
-for ensamble in *.fa; do
-   serotypefinder -i ./$ensamble 
-done
