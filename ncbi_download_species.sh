@@ -17,21 +17,36 @@ ncbi_download(){
      rsync -tv rsync://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_refseq.txt ./
   fi
 
-  # filtra aquellos de la especie de interes
-  grep -E "${especie}" assembly_summary_refseq.txt | cut -f 20 > ftp_links_${genero}.txt
-  # da el numero de genomas disponibles
+  # filtra aquellos de la especie de interes y devuelve solo nivel de ensamble y ruta de ubicacion
+  grep -E "${especie}" assembly_summary_refseq.txt | cut -f "12,20" > ftp_links_${genero}.txt
+
+  # da el numero de genomas disponibles totales y por nivel de ensamble
   echo -e "NCBI tiene un total de:" "'"$(cat ftp_links_${genero}.txt | wc -l)"'" "genomas para la especie '${especie}'"
+  echo $(cat ftp_links_${genero}.txt | grep -c "Contig") "genomas nivel: Contig (menor calidad)"
+  echo $(cat ftp_links_${genero}.txt | grep -c "Scaffold") "genomas nivel: Scaffold"
+  echo $(cat ftp_links_${genero}.txt | grep -c "Chromosome") "genomas nivel: Chromosome"
+  echo $(cat ftp_links_${genero}.txt | grep -c "Complete") "genomas nivel: Complete (mayor calidad)"
+
+  # recibir input del usuario numero y nivel de ensambles deseados
+  echo -e "\nPor favor elige el nivel de completud de ensamble que deseas"
+  read -p "Elige entre: (Contig, Scaffold, Chromosome o Complete): " cal
   echo -e "\nPor favor introduce el numero de genomas que deseas descargar"
-  read -p 'Numero de Genomas: ' genum
+  read -p "Numero de Genomas: " genum
+
   # crear otra funcion para descargar todos los archivos del NCBI
   awk 'BEGIN{FS=OFS="/";filesuffix="genomic.fna.gz"}{ftpdir=$0;asm=$10;file=asm"_"filesuffix;print "rsync -t -v "ftpdir,file" ./"}' \
-  ftp_links_${genero}.txt | sed 's/https/rsync/g' | head -${genum} > download_fna_files_${genero}.sh
+  ftp_links_${genero}.txt | sed 's/https/rsync/g' | grep ${cal} | sed 's/Contig//g;s/Scaffold//g;s/Chromosome//g;s/Complete Genome//g' \
+  | head -${genum} > download_fna_files_${genero}.sh
+
   # descargar los genomas
   bash download_fna_files_${genero}.sh
+
   # crear carpeta y mover genomas descargados al nuevo directorio
   mkdir ASSEMBLY_${genero}
   mv GC*.fna.gz ASSEMBLY_${genero}
 
+  # eliminafr archivos temporales
+  rm ftp_links_Pseudomonas.txt download_fna_files_${genero}.sh
 }
 
 # funcion para pbtener estadisticas
@@ -93,7 +108,7 @@ estadisticas(){
 
 # menu de ayuda
 AYUDA="
-   USO: ${0} -e 'Pseudomonas aeruginosa'
+   USO: $(basename ${0}) -e 'Pseudomonas aeruginosa'
 
    h)\tMuestra este menu de ayuda
 
@@ -122,4 +137,3 @@ while getopts e:h opt; do
         ;;
    esac
 done
- 

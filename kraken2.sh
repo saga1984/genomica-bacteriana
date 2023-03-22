@@ -16,16 +16,27 @@ for r1 in TRIMMING/*_1P.*fastq.gz; do # solo itera sobre lecturas R1
    name=$(basename $r1 | cut -d "_" -f "1") # crea nombre corto de resultado
    echo "$name"
    # correr kraken2, enviar log a archivo kraken2_log.txt
+<<<<<<< HEAD
+   kraken2 --db ${kraken2_db} --threads $(nproc) --gzip-compressed --use-names --paired --report ${dir}/kraken_${name}.txt ${r1} ${r2} 2> ${dir}/kraken2_log.txt
+   # filtrar resultados de kraken (si la col 4 tiene caracteres que contengan G o S (genero especie o subespecies) y la col 1 tiene valor mayor a 1, entonces imprimelo)
+   awk '$4 ~ "[DGS]" && $1 >= 0.01' ${dir}/kraken_${name}.txt > ${dir}/kraken_species_${name}.txt
+   # filtrar resultados de kraken (si la col 1 tiene valor mayor a 1, entonces imprimelo)
+   awk '$1 >= 0.01' ${dir}/kraken_${name}.txt > ${dir}/kraken_short_${name}.txt
+=======
    kraken2 --db $kraken2_db --threads $(nproc) --gzip-compressed --use-names --paired --report ${dir}/kraken_${name}.txt ${r1} ${r2} 2> ${dir}/kraken2_log.txt
    # filtrar resultados de kraken (si la col 4 tiene caracteres que contengan G o S (genero especie o subespecies) y la col 1 tiene valor mayor a 1, entonces imprimelo)
    awk '$4 ~ "[DGS]" && $1 > 0.1' ${dir}/kraken_${name}.txt > ${dir}/kraken_species_${name}.txt
    # filtrar resultados de kraken (si la col 1 tiene valor mayor a 1, entonces imprimelo)
    awk '$1 > 0.1' ${dir}/kraken_${name}.txt > ${dir}/kraken_short_${name}.txt
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    # agregar nombre de columnas a archivo filtrado (especies)
    sed -i '1i coverage%\tcoverage#\tasigned\trank_especie\tNCBItaxonomicID\ttaxonomic_name' ${dir}/kraken_species_${name}.txt
    # agregar nombre de columnas a archivo filtrado (% coverage > 1)
    sed -i '1i coverage%\tcoverage#\tasigned\trank_especie\tNCBItaxonomicID\ttaxonomic_name' ${dir}/kraken_short_${name}.txt
+<<<<<<< HEAD
+=======
 
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 done
 
 # crear un solo archivo de resultados para todas las muestras en un directorio

@@ -12,8 +12,7 @@ for file in ./*.bam; do
    cat ${fname}.fastq | grep '^@.*/2$' -A 3 --no-group-separator > ${fname}_R2.fastq # obtener R2
    rm ${fname}.fastq # remover archivo conjunto de R1, R2
    # comprimir archivos
-   #gzip ${fname}_R1.fastq
-   #gzip ${fname}_R2.fastq
+   gzip -9 ${fname}_R1.fastq
+   gzip -9 ${fname}_R2.fastq
 done
 
-gzip -9 *.fastq

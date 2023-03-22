@@ -27,6 +27,37 @@ fi
 # for loop para cada archivo fasta de variantes alelicas de genes para serogrupo de Listeria monocytogenes (bases de datos)
 for DB in lmo0737 lmo1118 ORF2110 ORF2819 prs; do
 # for loop para todos los ensambles dentro del directorio ASSEMBLY
+<<<<<<< HEAD
+   for ensamble in ASSEMBLY/*.fa; do
+      # definir nombre del ensamble
+      ename=${ensamble##ASSEMBLY/}
+      ensamble_name=${ename%%-spades-assembly.fa}
+
+      ############################################### sorting por genero ###################################################
+      # genero para el mejor hit de kmerfinder
+      kmerfinderGenus=$(awk '{print $2}' KMERFINDER/KF_${ensamble_name}/results_spa.csv | grep "Listeria" | sed -n '1p')
+      echo -e "especie identificada por kmefinder ${ensamble_name} = ${kmerfinderGenus}" # CONTROL
+
+      ############################################ identificacion por especie ################################################
+      # si tanto kraken2 como kamerfinder identifican el mismo genero entonces
+      if [[ ${kmerfinderGenus} == "Listeria" ]]; then
+
+         ###################
+         #   hacer blastn
+         ###################
+
+         echo -e "Blastn de ${ensamble_name} para predecir PCR_SEROGRUPO\n"
+         # correr blast para cada ensamble y para cada gen dentro de la base de datos
+         blastn -query ${ensamble} -db ${BIGSdb_Lm_db}/${DB}.fa > ${ensamble_name}_${DB}.txt
+
+         ##########################################################
+         # filtrar los numeros de variantes alelicas en cada caso
+         ##########################################################
+
+         grep -n "Sequences producing significant alignments:" ${ensamble_name}_${DB}.txt | cut -d ':' -f 1 > n1
+         sed -n "$(echo $[ $(cat n1) + 2 ]) p" ${ensamble_name}_${DB}.txt | cut -d '_' -f '2' | cut -d ' ' -f '1' > ${DB}_allele_${ensamble_name}_${DB}.txt
+      fi
+=======
    for ensamble in ASSEMBLY/Listeria/*.fa; do
       # definir nombre del ensamble
       ename=${ensamble##ASSEMBLY/Listeria/} # remover prefijo
@@ -46,6 +77,7 @@ for DB in lmo0737 lmo1118 ORF2110 ORF2819 prs; do
 
       grep -n "Sequences producing significant alignments:" ${ensamble_name}_${DB}.txt | cut -d ':' -f 1 > n1
       sed -n "$(echo $[ $(cat n1) + 2 ]) p" ${ensamble_name}_${DB}.txt | cut -d '_' -f '2' | cut -d ' ' -f '1' > ${DB}_allele_${ensamble_name}_${DB}.txt
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    done
 done
 
@@ -53,7 +85,11 @@ done
 # produce un formato tabulado legible de perfiles alelicos de Listeria monocytogenes
 ######################################################################################
 
+<<<<<<< HEAD
+for file in *allele*; do
+=======
 for file in ./*_allele_*; do
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    echo -e "$(echo ${file} | cut -d '_' -f 3 | cut -d '.' -f 1) \t $(cat ${file})" > ${file}
 done
 
@@ -79,7 +115,11 @@ awk '$2 != blank' tmp_prs > prs
 serotype_tabulate.awk lmo0737 lmo1118 ORF2110 ORF2819 prs > tmp_profile
 
 # rellenar espacios en blanco en los esquemas de variantes alelicas
+<<<<<<< HEAD
+awk 'BEGIN {FS=OFS="\t"} {for(i = 1; i <= NF; i++) if($i ~ /^ *$/) $i = 0 }; {print $0}' tmp_profile > profile.tsv
+=======
 awk 'BEGIN {FS=OFS="\t"} {for(i=1; i<=NF; i++) if($i ~ /^ *$/) $i = 0 }; {print $0}' tmp_profile > profile.tsv
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
 # asigar columnas a a profile
 sed -i '1i\ID\tlmo0737\tlmo1118\tORF2110\tORF2819\tprs' profile.tsv
@@ -102,11 +142,23 @@ awk 'NR==FNR{a[$1$2$3$4$5]=$6;next}$1$2$3$4$5 in a{print $0, a[$1$2$3$4$5]}' nue
 ###########################################################
 
 awk 'BEGIN {OFS="\t"} {print $8,$1,$2,$3,$4,$5,$6,$7}' tmp_serogrupo > tmp.serogrupo # imprime en formato tabulado el archivo serotipo y guardalo en un archivo nuevo
+<<<<<<< HEAD
+echo "Isolate,lmo0737,lmo1118,ORF2110,ORF2819,prs,pro-file_id,serogroup" > Lm_PCRserogrupo.csv # poner headers (primera fila con nombres)
+awk 'BEGIN {FS="\t"; OFS=","} {print $1,$2,$3,$4,$5,$6,$7,$8}' tmp.serogrupo >> Lm_PCRserogrupo.csv # crear archivo de resultados en formato .cvs
+awk 'BEGIN {FS=","; OFS="\t"} {print $1,$2,$3,$4,$5,$6,$7,$8}' Lm_PCRserogrupo.csv > Lm_PCRserogrupo.tsv # crear archivo de resultados en formato .tsv
+
+# eliminar segunda fila (nombres de columnas de profile.tsv)
+sed -i '2d' Lm_PCRserogrupo.tsv
+sed -i '2d' Lm_PCRserogrupo.csv
+
+# imprimir archivo final
+=======
 awk 'BEGIN {FS="\t"; OFS=","} {print $1,$2,$3,$4,$5,$6,$7,$8}' tmp.serogrupo > Lm_PCRserogrupo.csv # crear archivo de resultados en formato .cvs
 awk 'BEGIN {FS=","; OFS="\t"} {print $1,$2,$3,$4,$5,$6,$7,$8}' Lm_PCRserogrupo.csv > Lm_PCRserogrupo.tsv # crear archivo de resultados en formato .tsv
 
 # imprimir archivo final
 
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 echo -e "\n\n                PCR SEROGROUP     "
 cat Lm_PCRserogrupo.tsv
 echo ""
@@ -120,8 +172,17 @@ rm lmo0737 lmo1118 ORF2110 ORF2819 prs
 rm *tmp*
 rm *.txt
 rm n1
+<<<<<<< HEAD
+rm *nuevo*
+
+# mover todos los archivos finales a directorio de resultados
+mv *Lm_PCRserogrupo* ${dir}
+mv profile.tsv ${dir}/Lm_PCRserogrupo_profile.tsv
+
+=======
 rm nuevo_profile*
 
 # mover todos los archivos finales a directorio de resultados
 mv *Lm_PCRserogrupo* ${dir}
 mv profile.tsv ${dir}
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

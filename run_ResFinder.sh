@@ -220,7 +220,13 @@ RF_gen2cat.sh
 ##########################################################
 # obtener archivo de columnas para reporte de resultados #
 ##########################################################
+<<<<<<< HEAD
+# genes y categorias sin genes de estres
+RF_CategoriasGenes_RAMcol.sh
+
+=======
 
 # genes sin genes de estres
 # categorias cin Estres ni mutaciones cromosomicas
 RF_CategoriasGenes_RAMcol.sh
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf

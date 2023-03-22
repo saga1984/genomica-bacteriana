@@ -21,12 +21,18 @@ for read1 in *.fastq.gz; do
    read2=${read1/_R1./_R2.}
    # nombre del read (pareado) por ID
    read_name=$(basename ${read1} | cut -d '_' -f '1')
+<<<<<<< HEAD
+   echo "nombre de ensamble = ${read_name}"
+   # correr SeqSero2
+   SeqSero2_package.py -i ${read1} ${read2} -t 2 -p $(nproc) -m k -d ${dir}/${read_name} > ${dir}/tmp_SeqSero_${read_name}_output.txt
+=======
    echo -e "\nnombre de ensamble = ${read_name}\nread 1 = ${read1}\nread 2 = ${read2}"
 
 
 
    # correr SeqSero2
    SeqSero2_package.py -m k -t 2 -i ${read1} ${read2} -p $(nproc) -d ${dir}/${read_name} > ${dir}/tmp_SeqSero_${read_name}_output.txt
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    # filtrar resultados para archivo final 1 formato TSV con ID y resultados en una sola fila
    echo -e "$(cat ${dir}/${read_name}/SeqSero_result.tsv | grep ${read_name} | grep -v cannot)"
 done > ${dir}/SeqSero2_resultados.tsv

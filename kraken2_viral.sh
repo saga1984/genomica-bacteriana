@@ -15,7 +15,11 @@ mkdir $dir
 # NOTA: kraken2_db es el nombre de la base de datos de kraken2 en el server y se guardo la variable directamente en el archivo ~/.bashrc
 
 # ejecutar kraken y editar reporte de resultados
+<<<<<<< HEAD
+for r1 in ./*fastq.gz; do # solo itera sobre lecturas R1
+=======
 for r1 in TRIMMING/*_1P.*fastq.gz; do # solo itera sobre lecturas R1
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    r2=${r1/_R1/_R2} # crea nombre para lecturas R2
    name=$(basename $r1 | cut -d "_" -f "1") # crea nombre corto de resultado
 

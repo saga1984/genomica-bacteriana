@@ -85,7 +85,11 @@ done  > mismatches_all_results_${gname}.txt
 # Paserar argumentos y correr funcion "mismatch_blastx" #
 #########################################################
 
+<<<<<<< HEAD
+while getopts ":d:h" opciones; do
+=======
 while getopts ":d:h"  opciones; do
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    case "${opciones}" in
       d) #opcion para indicar data base con ruta
          ref_db="${OPTARG}" # asignar la ruta/nombre dela base de datos

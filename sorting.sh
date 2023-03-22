@@ -4,31 +4,28 @@
 # separa los ensambles de acuerdo al genero identificado por kraken2 y kmerfinder para analisis posteriores
 #
 
-# for loop para generos
-for genero in Salmonella Escherichia Listeria Enterococcus Citrobacter; do
-   # for loop para directorios que se van a crear y poblar
-   for dir in Salmonella Escherichia Listeria Enterococcus Citrobacter; do
+for genero in Salmonella Escherichia Listeria; do
+   for dir in Salmonella Escherichia Listeria; do
       if [[ ${genero} == ${dir} ]]; then
          # for loop para todos los archivos fastq comprimidos en la carpeta actual
-         for file in ASSEMBLY/*.fa; do
-            fname_nopath=$(basename ${file} | cut -d '/' -f '2')
+         for file in ./*_R1*fastq.gz; do
             # crear una variable para nombre (ID) de la muestra
-            fname=${fname_nopath%%-spades-assembly.fa}
+            fname=$(basename ${file} | cut -d "_" -f "1")
             # genero para el mejor hit de kraken2
-            krakenGenus=$(awk '$4 == "G" {print $6}' KRAKEN2/kraken_species_${fname}.txt | sed -n '1p')
-            echo -e "kraken sorting ${fname} = ${krakenGenus}" # CONTROL
+            krakenGenus=$(awk -v gname=${genero} '$4 == "G" && $6 == gname {print $6}' KRAKEN2/kraken_species_${fname}.txt)
+            # echo -e "kraken ${fname} = ${krakenGenus}" # CONTROL
             # genero para el mejor hit de kmerfinder
             kmerfinderGenus=$(awk '{print $2}' KMERFINDER/KF_${fname}/results_spa.csv | sed -n '2p')
-             echo -e "kmefinder sorting ${fname} = ${kmerfinder}" # CONTROL
-            # si tanto kraken2 como kamerfinder encuentran el mismo genero
-            if [[ ${krakenGenus} == ${genero} && ${kmerfinderGenus} == ${genero} ]]; then
-               # si no existe la carpeta Salmonella, Escherichia, Listeria y Enterococcus, entonces crealas
+            # echo -e "kmefinder ${fname} = ${kmaerfinder}" # CONTROL
+            # si tanto kraken2 como kamerfinder encuentran como genero Salmonella entonces
+            if [[ ${krakenGenus} == "${genero}" && $kmerfinderGenus  == "${genero}" ]]; then
+               # si no existe la carpeta SALMONELLA entonces
                if [[ ! -d ASSEMBLY/${dir} ]]; then
-                  # crea las carpetas Salmonella, Escherichia, Listeria y Enterococcus, segun sea el caso
+                  # crea la carpeta Salmonella
                   mkdir ASSEMBLY/${dir}
                fi
-               # copia los ensambles correspondientes a la carpeta del genero especifico
-               cp -v ASSEMBLY/${fname_nopath} ASSEMBLY/${dir}/${fname_nopath}
+               # copia los ensambles correspondientes a la carpeta SALMONELLA
+               cp -v ASSEMBLY/${fname}-spades-assembly.fa ASSEMBLY/${dir}/${fname}-spades-assembly.fa
             fi
          done
       fi

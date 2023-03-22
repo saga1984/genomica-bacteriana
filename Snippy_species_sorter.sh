@@ -1,11 +1,17 @@
 #!/bin/bash
 
+<<<<<<< HEAD
+#
+# correr snippy en modo de una sola secuencia sobre elementos en una parpeta
+#
+=======
 ############################################################################################################
 # correr snippy en modo de una sola secuencia sobre todos los ensambles en un directorio (ASSEMBLY)        #
 # este script selecciona ensambles en base a su nombre buscando la especie como palabra clave,             #
 # esta palabra clave se guarda en la variable "ref_name", la cual puede ser necesario modificar su codigo  #
 # para identificar el nombre de la especie                                                                 #
 ############################################################################################################
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
 run_snippy() {
    #################
@@ -80,12 +86,20 @@ run_snippy() {
    raxmlHPC -f a -p 1234567890 -s clean.core.aln -x 1234567890 -# 100 -m GTRGAMMA -n clean.core.newick
    # correr snp-dists, para obtener matriz de distancias de SNPs
    snp-dists -j $(nproc) clean.core.aln > Genero_SNP_matrix.tsv
+<<<<<<< HEAD
+
+=======
    
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    # limpiar archivos finales
    sed -i 's/coreSNP_//g' RAxML_bipartitions.clean.core.newick
    sed -i 's/coreSNP_//g' clean.core.newick
    sed -i 's/coreSNP_//g' Genero_SNP_matrix.tsv
+<<<<<<< HEAD
+
+=======
    
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    # renombrar archivos finales
    mv RAxML_bipartitions.clean.core.newick RAxML_bipartitions.clean.core_${especie}.newick
    mv clean.core.newick clean.core_${especie}.newick
@@ -116,7 +130,11 @@ fi
 # ----------------------------------------------------------------------
 
 # parseo de opciones/argumentos
+<<<<<<< HEAD
+while getopts ":a:e:h" opciones; do
+=======
 while getopts ":a:e:h"  opciones; do
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    case "${opciones}" in
       a)
          # si no existe la opcion -e manda mensaje de uso y sal con error

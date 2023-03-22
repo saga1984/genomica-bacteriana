@@ -11,8 +11,11 @@ uso() {
    echo -e "\t Identificación de genes RAM (y genes especiales) con AMRFinder(Plus),\n\t a partir de ensambles contenidos dentro de ./ASSEMBLY"
    echo -e "\n USO:"
    echo -e "\t$(basename ${0}) [opciones] <Especie>"
+<<<<<<< HEAD
+=======
    echo -e "\t$(basename ${0}) -l"
    echo -e "\t$(basename ${0}) -e Salmonella_enterica"
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
    echo -e "\n OPCIONES:"
    echo -e "\t-h \t\tMuestra este menú de ayuda"
    echo ""

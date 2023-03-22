@@ -5,10 +5,17 @@
 # -------------------------------------------------------------------------------------------------------------------------
 
 # copiar la base de datos al directorio actual
+<<<<<<< HEAD
+ln -s /home/senasica2/Bioinformatica_Programas/stringMLST/* $(pwd)
+
+# para cada uno de los generos vacterianos de analisis rutinario
+for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enterococcus_faecium Enterococcus_faecalis; do
+=======
 ln -s /disk1/Programas_bioinformaticos/stringMLST/* $(pwd)
 
 # para cada uno de los generos vacterianos de analisis rutinario
 for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enterococcus_faecium Enterococcus_faecalis Citrobacter_freundii; do
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
 
    # definir genero
    genero=$(basename ${especie} | cut -d '_' -f '1')
@@ -18,6 +25,15 @@ for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enter
    for file in TRIMMING/*_1P.*fastq.gz; do
       # crear una variable para nombre (ID) de la muestra
       fname=$(basename ${file} | cut -d "_" -f "1")
+<<<<<<< HEAD
+
+      # genero para el mejor hit de kmerfinder
+      kmerfinderGenus=$(awk '{print $2"_"$3}' KMERFINDER/KF_${fname}/results_spa.csv | grep "${especie}" | sed -n '1p')
+      echo -e "especie identificada por kmefinder ${fname} = ${kmerfinderGenus}" # CONTROL
+
+      # si tanto kraken2 como kamerfinder identifican el mismo genero entonces
+      if [[ ${kmerfinderGenus} == ${especie} ]]; then
+=======
       # genero para el mejor hit de kraken2
       krakenGenus=$(awk '$4 == "S" {print $6"_"$7}' KRAKEN2/kraken_species_${fname}.txt | sed -n '1p')
       echo -e "especie identificada por kraken ${fname} = ${krakenGenus}" # CONTROL
@@ -27,6 +43,7 @@ for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enter
 
       # si tanto kraken2 como kamerfinder identifican el mismo genero entonces
       if [[ ${krakenGenus} == ${kmerfinderGenus} ]]; then
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
          # para cada una de las siguientes opciones de generos
          echo "entrando a CASE"
          case ${especie} in
@@ -132,6 +149,8 @@ for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enter
                          continue
                       fi
                       ;;
+<<<<<<< HEAD
+=======
             Citrobacter_freundii)
                       # si el archivo no existe crealo con stringMLST, de lo contrario continua sin hacer nada
                       if [[ ! -f stringMLST_tmp_${genero}.tsv ]]; then
@@ -146,6 +165,7 @@ for especie in Salmonella_enterica Escherichia_coli Listeria_monocytogenes Enter
                          continue
                       fi
                       ;;
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
          esac
       fi
    done
@@ -163,4 +183,7 @@ rm *tmp*
 dir="STRINGMLST"
 mkdir ${dir}
 mv stringMLST* ${dir}
+<<<<<<< HEAD
+=======
 
+>>>>>>> c06077f8fdbc5ae39d8bf72caaca6cccbe11fcaf
